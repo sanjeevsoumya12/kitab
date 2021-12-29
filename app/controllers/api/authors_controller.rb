@@ -5,11 +5,6 @@ module Api
       render json: authors
     end
 
-    def show
-      @author = Author.find(params[:id])
-      render json: @author
-    end
-
     def create
       @author = Author.new(author_params)
       if @author.save
