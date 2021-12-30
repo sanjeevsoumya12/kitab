@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   namespace :api do
     resources :authors, only: [:index, :create]
     resources :books
+    get "search", to: "books#search"
   end
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?
 end

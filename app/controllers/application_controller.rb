@@ -14,7 +14,7 @@ class ApplicationController < ActionController::API
 
   # Check for auth headers - if present, decode or send unauthorized response (called always to allow current_user)
   def process_token
-    byebug
+    # byebug
     if request.headers["Authorization"].present?
       begin
         jwt_payload = JWT.decode(request.headers["Authorization"].split(" ")[1], Rails.application.secrets.secret_key_base).first
@@ -27,19 +27,19 @@ class ApplicationController < ActionController::API
 
   # If user has not signed in, return unauthorized response (called only when auth is needed)
   def authenticate_user!(options = {})
-    byebug
+    # byebug
     head :unauthorized unless signed_in?
   end
 
   # set Devise's current_user using decoded JWT instead of session
   def current_user
-    byebug
+    # byebug
     @current_user ||= super || User.find(@current_user_id)
   end
 
   # check that authenticate_user has successfully returned @current_user_id (user is authenticated)
   def signed_in?
-    byebug
+    # byebug
     @current_user_id.present?
   end
 
@@ -50,7 +50,7 @@ class ApplicationController < ActionController::API
   protected
 
   def configure_permitted_parameters
-    byebug
+    # byebug
     attributes = [:user_name, :phn_number, :date_of_birth, :password_confirmation]
     devise_parameter_sanitizer.permit(:sign_up, keys: attributes)
     # devise_parameter_sanitizer.permit(:account_update, keys: [:user_name, :phn_number, :date_of_birth])
