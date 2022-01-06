@@ -8,7 +8,8 @@ module Api
     end
 
     def search
-      render json: Book.joins(:author).where("title LIKE ?", "%" + params[:q] + "%").select("id", "title", "authors.name as author_name")
+      render json: Book.joins(:author).where("title LIKE ? or authors.name LIKE ?", "%" + params[:q] + "%", "%" + params[:q] + "%").select("id", "title", "authors.name as author_name")
+      # render json: Book.joins(:author).where("title = ?", params[:title]).select("id", "title", "authors.name as author_name")
     end
 
     def show

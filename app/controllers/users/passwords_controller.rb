@@ -4,7 +4,6 @@ class Users::PasswordsController < Devise::PasswordsController
 
   def update
     @user = User.find(current_user.id)
-    byebug
     if @user.update_with_password(user_params)
       render json: { message: "password updated" }
     else

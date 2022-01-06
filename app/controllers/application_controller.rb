@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
   before_action :configure_permitted_parameters, if: :devise_controller?
   respond_to :json
-  before_action :process_token
 
   rescue_from ActionController::ParameterMissing do |exception|
     render json: { error: exception.message }, status: :bad_request
@@ -27,7 +26,7 @@ class ApplicationController < ActionController::API
 
   # If user has not signed in, return unauthorized response (called only when auth is needed)
   def authenticate_user!(options = {})
-    # byebug
+    process_token
     head :unauthorized unless signed_in?
   end
 
@@ -53,7 +52,5 @@ class ApplicationController < ActionController::API
     # byebug
     attributes = [:user_name, :phn_number, :date_of_birth, :password_confirmation]
     devise_parameter_sanitizer.permit(:sign_up, keys: attributes)
-    # devise_parameter_sanitizer.permit(:account_update, keys: [:user_name, :phn_number, :date_of_birth])
-    # devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:user_name, :phn_number, :date_of_birth) }
   end
 end
