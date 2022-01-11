@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_084634) do
     t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.boolean "admin", default: false
     t.string "user_name"
     t.string "phn_number"
     t.date "date_of_birth"

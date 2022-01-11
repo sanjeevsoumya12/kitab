@@ -24,6 +24,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  #  access to admin
+  # def update
+  #   @user = User.find(current_user.id)
+  #   if (current_user && current_user.admin)
+  #     if @user.update(user_params)
+  #       render json: { message: "Details Updated" }
+  #     else
+  #       render json: { message: @user.errors.ojects.first.full_message }
+  #     end
+  #   else
+  #     render json: { message: "you are not access" }
+  #   end
+  # end
+
   private
 
   def user_params

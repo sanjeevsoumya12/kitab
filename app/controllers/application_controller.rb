@@ -8,18 +8,22 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotUnique do |exception|
     render json: { error: exception.message }, status: :bad_request
   end
+  # rescue_from ActiveRecord::RecordNotFound do |exception|
+  #   render json: { error: exception.message }, status: :bad_request
+  # end
 
   private
 
   # Check for auth headers - if present, decode or send unauthorized response (called always to allow current_user)
   def process_token
-    # byebug
     if request.headers["Authorization"].present?
       begin
         jwt_payload = JWT.decode(request.headers["Authorization"].split(" ")[1], Rails.application.secrets.secret_key_base).first
         @current_user_id = jwt_payload["id"]
       rescue JWT::ExpiredSignature, JWT::VerificationError, JWT::DecodeError
-        head :unauthorized
+        # head :unauthorized
+        false
+        # render json: { message: "unauthorized" }, status: :unauthorized
       end
     end
   end
@@ -27,7 +31,10 @@ class ApplicationController < ActionController::API
   # If user has not signed in, return unauthorized response (called only when auth is needed)
   def authenticate_user!(options = {})
     process_token
-    head :unauthorized unless signed_in?
+    # head :unauthorized unless signed_in?
+    unless signed_in? && process_token
+      render json: { message: "unauthorized" }, status: :unauthorized
+    end
   end
 
   # set Devise's current_user using decoded JWT instead of session
